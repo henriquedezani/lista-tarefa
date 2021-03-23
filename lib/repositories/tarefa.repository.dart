@@ -18,4 +18,9 @@ class TarefaRepository {
   List<Tarefa> read() {
     return tarefas;
   }
+
+  void delete(String texto) {
+    final tarefa = tarefas.singleWhere((t) => t.texto == texto);
+    tarefas.remove(tarefa);
+  }
 }

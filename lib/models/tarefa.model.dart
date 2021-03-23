@@ -5,5 +5,5 @@ class Tarefa {
   bool finalizada;
 
   // construtor:
-  Tarefa({this.id, this.texto, this.finalizada});
+  Tarefa({this.id, this.texto, this.finalizada = false});
 }

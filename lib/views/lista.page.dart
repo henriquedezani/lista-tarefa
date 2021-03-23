@@ -19,6 +19,15 @@ class _ListaPageState extends State<ListaPage> {
     this.tarefas = repository.read();
   }
 
+  Future adicionarTarefa(BuildContext context) async {
+    var result = await Navigator.of(context).pushNamed('/nova');
+    if (result == true) {
+      setState(() {
+        this.tarefas = repository.read();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,31 +39,33 @@ class _ListaPageState extends State<ListaPage> {
         itemCount: tarefas.length,
         itemBuilder: (_, indice) {
           var tarefa = tarefas[indice];
-          return CheckboxListTile(
-            title: Text(
-              tarefa.texto,
-              style: TextStyle(
-                decoration: tarefa.finalizada
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-              ),
+          return Dismissible(
+            key: Key(tarefa.texto),
+            background: Container(
+              color: Colors.red,
             ),
-            value: tarefa.finalizada,
-            onChanged: (value) {
-              setState(() => tarefa.finalizada = value);
-            },
+            onDismissed: (_) => repository.delete(tarefa.texto),
+            // confirmDismiss: (direction) =>, // TODO
+            child: CheckboxListTile(
+              title: Text(
+                tarefa.texto,
+                style: TextStyle(
+                  decoration: tarefa.finalizada
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
+              ),
+              value: tarefa.finalizada,
+              onChanged: (value) {
+                setState(() => tarefa.finalizada = value);
+              },
+            ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => NovaPage(),
-            ),
-          );
-        },
         child: Icon(Icons.add),
+        onPressed: () => adicionarTarefa(context),
       ),
     );
   }
