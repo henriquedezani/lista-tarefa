@@ -23,4 +23,9 @@ class TarefaRepository {
     final tarefa = tarefas.singleWhere((t) => t.texto == texto);
     tarefas.remove(tarefa);
   }
+
+  void update(Tarefa newTarefa, Tarefa oldTarefa) {
+    final tarefa = tarefas.singleWhere((t) => t.texto == oldTarefa.texto);
+    tarefa.texto = newTarefa.texto;
+  }
 }
